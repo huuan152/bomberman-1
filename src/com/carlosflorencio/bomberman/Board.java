@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import FileManager.Sounds;
 import com.carlosflorencio.bomberman.entities.Entity;
 import com.carlosflorencio.bomberman.entities.Message;
 import com.carlosflorencio.bomberman.entities.bomb.Bomb;
@@ -34,7 +35,7 @@ public class Board implements IRender {
 	private List<Message> _messages = new ArrayList<Message>();
 	
 	private int _screenToShow = -1; //1:endgame, 2:changelevel, 3:paused
-	
+
 	private int _time = Game.TIME;
 	private int _points = Game.POINTS;
 	private int _lives = Game.LIVES;

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
+import FileManager.Sounds;
 import com.carlosflorencio.bomberman.Board;
 import com.carlosflorencio.bomberman.Game;
 import com.carlosflorencio.bomberman.entities.Entity;
@@ -114,12 +115,10 @@ public class Screen {
 	public void drawChangeLevel(Graphics g, int level) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getRealWidth(), getRealHeight());
-		
 		Font font = new Font("Arial", Font.PLAIN, 20 * Game.SCALE);
 		g.setFont(font);
 		g.setColor(Color.white);
 		drawCenteredString("LEVEL " + level, getRealWidth(), getRealHeight(), g);
-		
 	}
 	
 	public void drawPaused(Graphics g) {
@@ -127,7 +126,6 @@ public class Screen {
 		g.setFont(font);
 		g.setColor(Color.white);
 		drawCenteredString("PAUSED", getRealWidth(), getRealHeight(), g);
-		
 	}
 	
 	

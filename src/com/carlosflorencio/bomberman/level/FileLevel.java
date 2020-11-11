@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.StringTokenizer;
 
-
-
 import com.carlosflorencio.bomberman.Board;
 import com.carlosflorencio.bomberman.Game;
 import com.carlosflorencio.bomberman.entities.LayeredEntity;

@@ -1,0 +1,123 @@
+package FileManager;/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+/**
+ *
+ */
+public class FileManager {
+
+    private static FileManager instance;
+
+    private FileManager() {
+    }
+
+    public static FileManager getInstance() {
+        return instance == null ? (instance = new FileManager()) : instance;
+    }
+
+    public boolean saveFile(File file, String string) {
+        try {
+            try (PrintWriter printWriter1 = new PrintWriter(file)) {
+                printWriter1.print(string);
+            }
+            return true;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        return false;
+    }
+
+    public String loadFile(File file) {
+        //Ejm: "C:/Windows/text.txt"
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            StringBuilder in = new StringBuilder();
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                in.append(linea);
+                if (br.ready())
+                    in.append(System.lineSeparator());
+            }
+            return in.toString();
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return null;
+    }
+
+    public String loadFile(String pathname) {
+        //Ejm: "C:/Windows/text.txt"
+        return loadFile(new File(pathname));
+    }
+
+    public Clip loadClipJar(String pathName) {
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource(pathName)));
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return clip;
+    }
+
+    public Clip loadClip(String pathName) {
+        //Ejm: "C:/Windows/Web/Wallpaper/Windows/img0.jpg"
+        Clip clip = null;
+        try {
+            clip = loadClip(new URL(pathName));
+        } catch (MalformedURLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return clip;
+    }
+
+    public Clip loadClip(URL path) {
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(path));
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return clip;
+    }
+
+    public Document loadXml(String pathName) {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            return db.parse(new File(pathName));
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Document loadXmlJar(String pathName) {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            return db.parse(getClass().getClassLoader().getResource(pathName).toString());
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
+}

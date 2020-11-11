@@ -7,10 +7,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 
+import FileManager.Sound;
+import FileManager.SoundResource;
+import FileManager.Sounds;
 import com.carlosflorencio.bomberman.exceptions.BombermanException;
 import com.carlosflorencio.bomberman.graphics.Screen;
 import com.carlosflorencio.bomberman.gui.Frame;
 import com.carlosflorencio.bomberman.input.Keyboard;
+
+import javax.sound.sampled.Clip;
 
 public class Game extends Canvas {
 	
@@ -122,7 +127,7 @@ public class Game extends Canvas {
 	
 	public void start() {
 		_running = true;
-		
+		Sounds.getInstance().loop(Sounds.STAGE_THEME);
 		long  lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
 		final double ns = 1000000000.0 / 60.0; //nanosecond, 60 frames per second
@@ -150,8 +155,7 @@ public class Game extends Canvas {
 			} else {
 				renderGame();
 			}
-				
-			
+
 			frames++;
 			if(System.currentTimeMillis() - timer > 1000) { //once per second
 				_frame.setTime(_board.subtractTime());

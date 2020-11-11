@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import FileManager.Sounds;
 import com.carlosflorencio.bomberman.Board;
 import com.carlosflorencio.bomberman.Game;
 import com.carlosflorencio.bomberman.entities.Entity;
@@ -22,7 +23,7 @@ public class Player extends Mob {
 	
 	private List<Bomb> _bombs;
 	protected Keyboard _input;
-	
+
 	protected int _timeBetweenPutBombs = 0;
 	
 	public static List<Powerup> _powerups = new ArrayList<Powerup>();
@@ -54,7 +55,7 @@ public class Player extends Mob {
 		animate();
 		
 		calculateMove();
-		
+
 		detectPlaceBomb();
 	}
 	
@@ -62,11 +63,14 @@ public class Player extends Mob {
 	public void render(Screen screen) {
 		calculateXOffset();
 		
-		if(_alive)
+		if(_alive) {
 			chooseSprite();
-		else
+		} else {
+			Sounds.getInstance().play(Sounds.DEATH);
 			_sprite = Sprite.player_dead1;
-		
+		}
+
+
 		screen.renderEntity((int)_x, (int)_y - _sprite.SIZE, this);
 	}
 	
@@ -152,11 +156,20 @@ public class Player extends Mob {
 	@Override
 	protected void calculateMove() {
 		int xa = 0, ya = 0;
-		if(_input.up) ya--;
-		if(_input.down) ya++;
-		if(_input.left) xa--;
-		if(_input.right) xa++;
-		
+		if(_input.up) {
+			ya--;
+			Sounds.getInstance().play(Sounds.UP);
+		} else if(_input.down) {
+			ya++;
+			Sounds.getInstance().play(Sounds.DOWN);
+		} else if(_input.left) {
+			xa--;
+			Sounds.getInstance().play(Sounds.LEFT);
+		} else if (_input.right) {
+			xa++;
+			Sounds.getInstance().play(Sounds.RIGHT);
+		}
+
 		if(xa != 0 || ya != 0)  {
 			move(xa * Game.getPlayerSpeed(), ya * Game.getPlayerSpeed());
 			_moving = true;
@@ -184,10 +197,10 @@ public class Player extends Mob {
 	@Override
 	public void move(double xa, double ya) {
 		if(xa > 0) _direction = 1;
-		if(xa < 0) _direction = 3;
-		if(ya > 0) _direction = 2;
-		if(ya < 0) _direction = 0;
-		
+		else if(xa < 0) _direction = 3;
+		else if(ya > 0) _direction = 2;
+		else if(ya < 0) _direction = 0;
+
 		if(canMove(0, ya)) { //separate the moves for the player can slide when is colliding
 			_y += ya;
 		}
@@ -219,9 +232,10 @@ public class Player extends Mob {
 	 */
 	public void addPowerup(Powerup p) {
 		if(p.isRemoved()) return;
-		
+
+		Sounds.getInstance().play(Sounds.POWER_UP);
 		_powerups.add(p);
-		
+
 		p.setValues();
 	}
 	

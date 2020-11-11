@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import FileManager.Sounds;
 import com.carlosflorencio.bomberman.Game;
 import com.carlosflorencio.bomberman.gui.menu.Menu;
 
@@ -29,13 +30,13 @@ public class Frame extends JFrame {
 		_game = _gamepane.getGame();
 		
 		add(_containerpane);
-		
+
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setLocationRelativeTo(null);
-		setVisible(true);	
-		
+		setVisible(true);
+
 		_game.start();
 	}
 	

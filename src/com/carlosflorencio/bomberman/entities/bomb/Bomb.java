@@ -1,5 +1,7 @@
 package com.carlosflorencio.bomberman.entities.bomb;
 
+import FileManager.Sound;
+import FileManager.Sounds;
 import com.carlosflorencio.bomberman.Board;
 import com.carlosflorencio.bomberman.Game;
 import com.carlosflorencio.bomberman.entities.AnimatedEntitiy;
@@ -30,10 +32,13 @@ public class Bomb extends AnimatedEntitiy {
 	
 	@Override
 	public void update() {
-		if(_timeToExplode > 0) 
+		if(_timeToExplode > 0) {
+			if (_timeToExplode == 120) {
+				Sounds.getInstance().play(Sounds.BOMB_PLANT);
+			}
 			_timeToExplode--;
-		else {
-			if(!_exploded) 
+		} else {
+			if(!_exploded)
 				explosion();
 			else
 				updateExplosions();
@@ -91,11 +96,14 @@ public class Bomb extends AnimatedEntitiy {
 		for (int i = 0; i < _explosions.length; i++) {
 			_explosions[i] = new DirectionalExplosion((int)_x, (int)_y, i, Game.getBombRadius(), _board);
 		}
+		Sound s = Sounds.getInstance().getNewSound(Sounds.EXPLOSION_1);
+		if (s != null)
+			s.play();
 	}
 	
 	public Explosion explosionAt(int x, int y) {
 		if(!_exploded) return null;
-		
+
 		for (int i = 0; i < _explosions.length; i++) {
 			if(_explosions[i] == null) return null;
 			Explosion e = _explosions[i].explosionAt(x, y);
